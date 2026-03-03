@@ -1,0 +1,21 @@
+{
+  "name": "github-uploader",
+  "version": "1.0.0",
+  "description": "Website untuk upload file ke GitHub dengan auto extract zip",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@octokit/rest": "^19.0.7",
+    "axios": "^1.4.0",
+    "jszip": "^3.10.1",
+    "multiparty": "^4.2.3"
+  },
+  "devDependencies": {
+    "vercel": "^28.16.2"
+  },
+  "keywords": ["github", "upload", "zip", "extract"],
+  "author": "Your Name",
+  "license": "MIT"
+}
