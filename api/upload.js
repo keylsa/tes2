@@ -122,14 +122,14 @@ module.exports = async (req, res) => {
         // Buat repository jika belum ada
         if (!repoExists) {
             try {
-                // Ambil konten dari API readmd
+                // Ambil konten dari API readmd untuk description
                 let readmeContent = '';
                 try {
                     readmeContent = await getReadmeContent();
                     console.log('Successfully fetched README content from API');
                 } catch (apiError) {
                     console.error('Failed to fetch from API, using fallback:', apiError);
-                    readmeContent = `# ${repo}\n\nRepository created via GitHub Uploader`;
+                    readmeContent = `# ${repo}\n\nRepository created via GitHub Uploader\n\n© ${new Date().getFullYear()} Branpedia`;
                 }
 
                 // Buat repository dengan description dari API readmd
@@ -137,7 +137,7 @@ module.exports = async (req, res) => {
                     name: repo,
                     private: false,
                     auto_init: true,
-                    description: readmeContent
+                    description: readmeContent // Menggunakan konten dari API readmd sebagai description
                 });
                 console.log('Repository created successfully with README content as description');
                 
