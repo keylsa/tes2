@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Uploader - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub Uploader</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="upload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload</span>
+                </a>
+                <a href="#" class="nav-item" data-page="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info-mini" id="sidebarUserInfo">
+                    <img id="sidebarAvatar" src="" alt="" class="sidebar-avatar">
+                    <span id="sidebarUsername"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <div id="auth-section" class="auth-section">
+                        <button id="login-btn" class="btn btn-primary">Login dengan GitHub</button>
+                    </div>
+                    <div id="user-section" class="user-section hidden">
+                        <img id="user-avatar" src="" alt="Avatar" class="user-avatar">
+                        <span id="username"></span>
+                        <button id="logout-btn" class="btn btn-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Pages -->
+            <div class="content-wrapper">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Total Files</span>
+                                <span class="stat-value" id="totalFiles">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hdd"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Storage Used</span>
+                                <span class="stat-value" id="totalStorage">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Successful</span>
+                                <span class="stat-value" id="successfulUploads">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Last Upload</span>
+                                <span class="stat-value" id="lastUpload">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-repos">
+                        <h2>Recent Repositories</h2>
+                        <div class="repo-list" id="repoList"></div>
+                    </div>
+                </div>
+
+                <!-- Upload Page -->
+                <div id="upload-page" class="page">
+                    <div class="upload-container">
+                        <div class="upload-form">
+                            <div class="form-group">
+                                <label for="repo-name">Repository Name:</label>
+                                <div class="repo-input-wrapper">
+                                    <span class="repo-prefix" id="repoPrefix"></span>
+                                    <input type="text" id="repo-name" placeholder="my-project" required>
+                                </div>
+                                <small class="text-muted">Hanya nama repository, akan otomatis menggunakan username Anda</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="file-path">Path (opsional):</label>
+                                <input type="text" id="file-path" placeholder="folder/subfolder">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="commit-message">Commit message:</label>
+                                <input type="text" id="commit-message" placeholder="Add files via GitHub Uploader" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>File:</label>
+                                <div class="drop-zone" id="dropZone">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag & drop files here or click to select</p>
+                                    <input type="file" id="file-input" multiple style="display: none;">
+                                    <button type="button" class="btn btn-outline" id="browseBtn">Browse Files</button>
+                                </div>
+                                <div id="file-list" class="file-list"></div>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-extract" checked>
+                                    <span class="checkbox-custom"></span>
+                                    Auto extract ZIP files
+                                </label>
+                            </div>
+
+                            <button id="upload-btn" class="btn btn-primary btn-large" disabled>
+                                <i class="fas fa-cloud-upload-alt"></i> Upload Files
+                            </button>
+                        </div>
+
+                        <div id="progress" class="progress hidden">
+                            <div class="progress-bar" id="progressBar"></div>
+                            <span class="progress-text">Mengupload...</span>
+                        </div>
+
+                        <div id="result" class="result hidden"></div>
+                    </div>
+                </div>
+
+                <!-- History Page -->
+                <div id="history-page" class="page">
+                    <div class="history-container">
+                        <h2>Upload History</h2>
+                        <div class="history-filters">
+                            <input type="text" id="historySearch" placeholder="Search by filename or repository...">
+                            <select id="historyFilter">
+                                <option value="all">All</option>
+                                <option value="success">Success</option>
+                                <option value="error">Failed</option>
+                            </select>
+                        </div>
+                        <div class="history-list" id="historyList">
+                            <div class="loading">Loading history...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings-page" class="page">
+                    <div class="settings-container">
+                        <h2>Settings</h2>
+                        
+                        <div class="settings-section">
+                            <h3>Default Settings</h3>
+                            
+                            <div class="setting-item">
+                                <label for="defaultCommit">Default Commit Message:</label>
+                                <input type="text" id="defaultCommit" value="Add files via GitHub Uploader">
+                            </div>
+
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="defaultAutoExtract" checked>
+                                    <span class="checkbox-custom"></span>
+                                    Auto-extract ZIP files by default
+                                </label>
+                            </div>
+
+                            <div class="setting-item">
+                                <label for="defaultPath">Default Path:</label>
+                                <input type="text" id="defaultPath" placeholder="folder/subfolder">
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Appearance</h3>
+                            
+                            <div class="setting-item">
+                                <label for="theme">Theme:</label>
+                                <select id="theme">
+                                    <option value="dark" selected>Dark</option>
+                                    <option value="light">Light</option>
+                                    <option value="system">System</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>About</h3>
+                            <p>GitHub Uploader v1.0.0</p>
+                            <p>Upload files directly to GitHub repositories with auto-extract ZIP support.</p>
+                        </div>
+
+                        <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
